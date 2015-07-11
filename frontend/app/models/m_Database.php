@@ -1,7 +1,7 @@
 <?php
     class m_Database extends SQLite3 {
         public function __construct() {
-            $dbpath = "/usr/share/asphaleia/app/config.db";
+            $dbpath = "/usr/share/asphaleia/frontend/app/config.db";
 
             if (is_writable($dbpath)) {
                 $this->open($dbpath, SQLITE3_OPEN_READWRITE);

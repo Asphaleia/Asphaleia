@@ -10,12 +10,10 @@
         private function getPassword() {
             require_once('m_Database.php');
             $database = new m_Database;
-
             $data = $database->prepare('SELECT password from user where username=:user');
             $data->bindValue('user', $this->username, SQLITE3_TEXT );
             $result = $data->execute();
             $result = $result->fetchArray();
-
             if (empty($result)) {
                 return '';
             } else {
@@ -25,7 +23,6 @@
 
         public function check_password() {
             $pass = $this->getPassword();
-
             if (empty($pass)) {
                 return false;
             } else {
@@ -52,16 +49,13 @@
         public function destroy_session($std, $database) {
             // delete session from database
             $database->delete_session(session_id(), $_SESSION['username']);
-
             // destroy session
             session_unset();
             session_destroy();
-
             // delete php session cookie
             if (isset($_COOKIE['PHPSESSID'])) {
                 setcookie('PHPSESSID', '', time() - 7000000, '/');
             }
-
             // redirect
             if ($std->IsXHttpRequest()) {
                 echo 'false';

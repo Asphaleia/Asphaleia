@@ -14,9 +14,24 @@
                 <li class='hidden-sm hidden-md'><a><img hidden id="ajaxloader" src="/asphaleia/img/ajax-loader.gif"></a></li>
 
                 <li><a id="menudashboard" class="workspacetab" href='/asphaleia/dashboard'><span class="glyphicon glyphicon-dashboard"></span> <span class='hidden-sm hidden-md'>Dashboard</span></a></li>
+
+                <li class = "dropdown">
+                    <a href='#' id="menuconfig" class = "dropdown-toggle" data-toggle = "dropdown"><span class="glyphicon glyphicon-off"></span> <b class = "caret"></b></a>
+                    <ul class = "dropdown-menu">
+                        <li><a href='/asphaleia/auth/logout'><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                        <li><a id="menushutdownbutton" href='/asphaleia/service/hold'><span class="glyphicon glyphicon-off"></span> Shutdown</a></li>
+                        <li><a id="menurebootbutton" href='/asphaleia/service/hold'><span class="glyphicon glyphicon-repeat"></span> Reboot</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
 </div>
 
 <div id="workspace"></div>
+
+<script>
+    require(['common'],function(methods) {
+        methods.common();
+    });
+</script>

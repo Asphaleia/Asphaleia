@@ -14,7 +14,7 @@
             <div class="alert alert-warning" role="alert"><h3 align="center">Warning - JavaScript is disabled. This application won't work correctly!</h3></div>
         </div>
     </noscript>
-    <title>asphaleia</title>
+    <title>Asphaleia</title>
 </head>
 <body>
 <div hidden id="offlinemessage">
