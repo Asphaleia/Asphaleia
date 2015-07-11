@@ -11,6 +11,8 @@
             }
         }
 
+
+
         public function add_session($session_id, $username, $timestamp, $source_ip, $browser_agent) {
             $query = $this->prepare('INSERT INTO sessions (session_id, username_id, login_time, source_ip, browser_agent)
                                     VALUES (:session_id, (SELECT id from user where username=:username), :login_time, :source_ip, :browser_agent)');
@@ -23,6 +25,14 @@
 
             $query->execute();
             return $this->return_last_error();
+        }
+
+        public function get_config($option) {
+            $data = $this->prepare('SELECT value from config where option=:option');
+            $data->bindValue('option', $option, SQLITE3_TEXT );
+            $result = $data->execute();
+            $result = $result->fetchArray();
+            return $result['value'];
         }
 
         public function delete_session($session_id, $username) {

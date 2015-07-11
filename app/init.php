@@ -1,7 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alexander.hank
- * Date: 11.07.2015
- * Time: 21:55
- */
+    require_once 'core/App.php';
+    require_once 'core/Controller.php';
+?>

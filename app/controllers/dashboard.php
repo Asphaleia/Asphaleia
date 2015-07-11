@@ -1,5 +1,5 @@
 <?php
-    class dashboard {
+    class dashboard extends Controller {
 
     }
 

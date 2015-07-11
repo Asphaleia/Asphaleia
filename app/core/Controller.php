@@ -10,19 +10,19 @@
             $this->m_database = $this->model('m_Database');
             $this->m_exec = $this->model('m_Exec');
             $this->m_std = $this->model('m_Std');
-            $this->m_std = $this->model('m_Session');
+            $this->m_session = $this->model('m_Session');
         }
 
         public function check_loggedin($controller) {
             if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
-                $this->session->setUsername($_SESSION['username']);
-                $this->session->setPassword($_SESSION['password']);
+                $this->m_session->setUsername($_SESSION['username']);
+                $this->m_session->setPassword($_SESSION['password']);
 
                 // Check if user is logged in
                 // Checks for correct password, browser agent, source_ip and if the sessions is expired
                 // if everything is ok, the session timestamp will be updated
-                if (!$this->session->check_password() or !$this->session->check_other_params($this->database->get_sessions_by_username($_SESSION['username'])) or time() - $_SESSION['timestamp'] > intval($this->database->get_config('idle') * 60)) {
-                    $this->session->destroy_session($this->std, $this->database);
+                if (!$this->m_session->check_password() or !$this->m_session->check_other_params($this->m_database->get_sessions_by_username($_SESSION['username'])) or time() - $_SESSION['timestamp'] > intval($this->m_database->get_config('idle') * 60)) {
+                    $this->m_session->destroy_session($this->m_std, $this->m_database);
                 } else {
                     // Update time
                     // Don't update if controller is connection
@@ -30,11 +30,11 @@
                     // even if the session is expired, but the site is still loaded
                     if ($controller !== 'connection') {
                         $time = time();
-                        $this->session->setTime($time);
+                        $this->m_session->setTime($time);
                     }
                 }
             } else {
-                if ($this->std->IsXHttpRequest()) {
+                if ($this->m_std->IsXHttpRequest()) {
                     echo 'false';
                 } else {
                     header("Location: /asphaleia/auth/login");

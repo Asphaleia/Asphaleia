@@ -48,16 +48,15 @@ Class App {
         $this->params = $url ? array_values($url) : [];
 
         // If request is no ajax, display header, menu and footer
-        if (!$this->controller->std->IsXHttpRequest() && $this->controllername !== "auth") {
-            $this->controller->view('header');
-            $this->controller->view('menu');
+        if (!$this->controller->m_std->IsXHttpRequest() && $this->controllername !== "auth") {
+            $this->controller->view('v_header');
+            $this->controller->view('v_menu');
         }
 
         call_user_func_array([$this->controller, $this->method], $this->params);
 
-        if (!$this->controller->std->IsXHttpRequest() && $this->controllername !== "auth") {
-            $this->controller->view('footer');
-
+        if (!$this->controller->m_std->IsXHttpRequest() && $this->controllername !== "auth") {
+            $this->controller->view('v_footer');
         }
     }
 

@@ -19,3 +19,17 @@ CREATE TABLE sessions(
   source_ip varchar(15) NOT NULL,
   browser_agent varchar(200) NOT NULL
 );
+
+DROP TABLE IF EXISTS user;
+CREATE TABLE user(
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  username varchar(50) NOT NULL,
+  password varchar(64) NOT NULL /* for sha256 hash */
+);
+
+INSERT INTO config (option, optioningui, ispath, value, description, category) VALUES
+  ('mdstat', '/proc mdstat', 1, '/proc/mdstat', "Path to the mdstat file", 3),
+  ('sudo', 'subo bin', 1, '/usr/bin/sudo', "Path to the sudo binary", 3),
+  ('service', 'service bin', 1, '/usr/sbin/service', "Path to the service binary", 3),
+  ('shutdown', 'shutdown bin', 1, '/sbin/shutdown', "Path to the shutdown binary", 3),
+  ('idle', 'idle time', 0, 15, 'Time until the user is automatically logged out in minutes', 3);
