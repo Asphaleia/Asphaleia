@@ -66,7 +66,7 @@
             if ($std->IsXHttpRequest()) {
                 echo 'false';
             } else {
-                header("Location: /phpietadmin/auth/login");
+                header("Location: /asphaleia/auth/login");
             }
             // Die in case browser ignores header redirect
             die();
