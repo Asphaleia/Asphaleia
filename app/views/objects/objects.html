@@ -1,0 +1,10 @@
+<tr>
+    <td><?php echo $data->getName(); ?></td>
+    <td><?php echo $data->getDnsname(); ?></td>
+    <td><?php echo $data->getIpv4address(); ?></td>
+    <td><?php echo $data->getIpv6address(); ?></td>
+    <td><span class="label label-<?php if( $data->getType() == "host" ) { echo "info"; } else { echo "warning"; } ?>">
+        <?php echo $data->getType(); ?></span>
+    </td>
+    <td><a href="/asphaleia/public/add/object/<?php echo $data->getId(); ?>" target="_blank"><button type="button" class="btn btn-default" value="<?php echo $data->getId(); ?>">Edit</button></a></td>
+</tr>

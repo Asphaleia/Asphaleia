@@ -1,0 +1,35 @@
+<form role="form">
+    <div class="addingspace" id="addingspace">
+        <div id="addressobjects-space">
+            <div class="input-group" id="name">
+                <span class="input-group-addon">Name:</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" value="<?php echo $data[0]->getName(); ?>">
+            </div>
+            <div class="input-group" id="type">
+                Select type:
+                <label class="radio-inline">
+                    <input type="radio" name="optradio" <?php if( $data[0]->getType() == "host" ) { echo 'checked="checked"'; } ?>>Host
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="optradio"<?php if( $data[0]->getType() == "network" ) { echo 'checked="checked"'; } ?>>Network
+                </label>
+            </div>
+            <div class="input-group" id="ipv4">
+                <span class="input-group-addon">IPv4 address:</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" value="<?php echo $data[0]->getIpv4address(); ?>">
+            </div>
+            <div class="input-group" id="ipv6">
+                <span class="input-group-addon">IPv6 address:</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" value="<?php echo $data[0]->getIpv6address(); ?>">
+            </div>
+            <div class="input-group" id="dnsname">
+                <span class="input-group-addon">DNS name:</span>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" value="<?php echo $data[0]->getDnsname(); ?>">
+            </div>
+            Description:
+            <textarea class="form-control" rows="5" id="comment"><?php echo $data[0]->getDescription(); ?></textarea>
+            <button id="closebutton" type="button" class="btn btn-default">Close</button>
+            <button id="save" type="button" class="btn btn-default" value="<?php echo $data[0]->getId(); ?>">Save</button>
+        </div>
+    </div>
+</form>
