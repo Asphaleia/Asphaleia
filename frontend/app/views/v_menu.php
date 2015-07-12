@@ -15,6 +15,8 @@
 
                 <li><a id="menudashboard" class="workspacetab" href='/asphaleia/dashboard'><span class="glyphicon glyphicon-dashboard"></span> <span class='hidden-sm hidden-md'>Dashboard</span></a></li>
 
+                <li><a id="menuaddressobjects" class="workspacetab" href='/asphaleia/addressobjects'><span class="glyphicon glyphicon-dashboard"></span> <span class='hidden-sm hidden-md'>Address-Objects</span></a></li>
+
                 <li class = "dropdown">
                     <a href='#' id="menuconfig" class = "dropdown-toggle" data-toggle = "dropdown"><span class="glyphicon glyphicon-off"></span> <b class = "caret"></b></a>
                     <ul class = "dropdown-menu">

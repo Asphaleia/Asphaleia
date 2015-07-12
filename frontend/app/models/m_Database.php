@@ -66,6 +66,13 @@
         public function __destruct() {
             $this->close();
         }
+
+        /* Get all ids from addressobjects */
+        public function getAddressObjectIds() {
+            $query = $this->prepare('SELECT id FROM address_objects');
+            $result = $query->execute();
+            return $result;
+        }
     }
 
 ?>
