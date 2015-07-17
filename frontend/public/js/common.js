@@ -8,7 +8,7 @@ requirejs.config({
     }
 });
 
-define(['jquery', 'mylibs', 'bootstrap'], function($, mylibs) {
+define(['jquery', 'mylibs', 'bootstrap', 'once'], function($, mylibs) {
     var methods;
 
     return methods = {
