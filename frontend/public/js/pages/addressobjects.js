@@ -1,4 +1,4 @@
-define(['jquery', 'mylibs'], function($, mylibs) {
+define(['jquery', 'mylibs', 'pages/validation'], function($, mylibs) {
     var Methods;
     return Methods = {
         // Creates a new table row for a new element
@@ -18,46 +18,97 @@ define(['jquery', 'mylibs'], function($, mylibs) {
                 // Get the row
                 var thisrow = $(this).closest('tr');
                 // Vars for adding objects
+                var id = thisrow.find(".id");
                 var name = thisrow.find(".addressobjectname");
                 var ipv4address = thisrow.find(".addressobjectipv4address");
                 var dnsname = thisrow.find(".addressobjectdnsname");
                 var description = thisrow.find(".addressobjectdescription");
                 var type = thisrow.find(".typeselection");
+                // ajax asker
+                var btype = false;
+                var bname = false;
+                var bdnsname = false;
+                var bipv4address = false;
                 // Watch out, are all arguments right?
                 if ( type.select('option:selected').val() == "Select type..." ) {
-                    // Error while type
+                    // Error type
                     errorfeedback(type);
                 } else {
                     okfeedback(type);
+                    btype = true;
                 }
                 if ( (name.val() == "") || (name.val() == "Name") ) {
-                    // Error while name
+                    // Error name
                     errorfeedback(name);
                 } else {
                     okfeedback(name);
+                    bname = true;
                 }
                 if ( (dnsname.val() == "") || (dnsname.val() == "DNS Name") ) {
-                    // Error while dnsname
+                    // Error dnsname
                     errorfeedback(dnsname);
                 } else {
                     okfeedback(dnsname);
+                    bdnsname = true;
                 }
                 if ( !ipnetworkvalid(ipv4address) ) {
-                    // Error while ip
+                    // Error ip
                     errorfeedback(ipv4address);
                 } else {
                     okfeedback(ipv4address);
+                    bipv4address = true;
                 }
-                $('#addressobjectstable #addobjectrowbutton').show();
+                // Ajax will be send here
+                if ( btype && bname && bdnsname && bipv4address ) {
+                    // Data for the ajax
+                    var data = {
+                        id: id.text(),
+                        name: name.val(),
+                        ipv4address: ipv4address.val(),
+                        dnsname: dnsname.val(),
+                        description: description.val(),
+                        type: type.val()
+                    };
+                    $.ajax({
+                        type:   'post',
+                        cache:  false,
+                        url:    "/asphaleia/addressobjects/update",
+                        data:   data,
+                        success: function(result){
+                            // replace input fields with values
+                            id.text(result);
+                            name.replaceWith(data['name']);
+                            ipv4address.replaceWith(data['ipv4address']);
+                            dnsname.replaceWith(data['dnsname']);
+                            description.replaceWith(data['description']);
+                            type.replaceWith(data['type']);
+                            $('#addressobjectstable #addobjectrowbutton').show();
+                        }
+                    });
+                }
             });
         },
         deleteaddressobject: function() {
             $(document).once('click', '.deleteobjectrow', function() {
-            	if($(this).closest('tr .id').val() == "") {
-            		//make nothing and say dings
-            	}
-            	$(this).closest('tr').remove();
-                $('#addressobjectstable #addobjectrowbutton').show();
+                var row = $(this).closest('tr');
+                var id = row.find('.id').html();
+                var data = { id: id };
+                // If it is a new host or network delete only the row
+            	if( id == "") {
+            		row.remove();
+                    $('#addressobjectstable #addobjectrowbutton').show();
+            	} else {
+                    // make the ajax and delete the object
+                    $.ajax({
+                        type:   'post',
+                        cache:  false,
+                        url:    "/asphaleia/addressobjects/delete",
+                        data:   data,
+                        success: function(result){
+                            row.remove();
+                        }
+                    });
+                }
             });
         }
     };
@@ -66,50 +117,5 @@ define(['jquery', 'mylibs'], function($, mylibs) {
     };
     function okfeedback(objectclass) {
         objectclass.css({'background-color': '#449D44'});
-    };
-    function ipnetworkvalid (ipv4network) {
-    // Trennen von Netz-IP und Subnetmask
-        ipv4network = ipv4network.toString().split("/");
-        // Netzwerk-IP
-        netip = ipv4network[0];
-        // Subnetmask
-        mask = ipv4network[1];
-        // Segmente aufteilen
-        seg = netip.toString().split("\.");
-        // Hostanteil
-        hostanteil = 32-mask;
-        // Hostanteil im letzten Segment
-        hostanteilLetztesSegment = hostanteil%8;
-        // Hosts im letzten Segment
-        hostsLetztesSegment = Math.pow(2, hostanteilLetztesSegment);
-        // Auswahl Segment
-        auswahlSeg = parseInt(mask/8);
-    
-        if( seg[auswahlSeg]%hostsLetztesSegment == 0 )
-        {
-            // Alle Segmente hinter der Mask muessen Null sein
-            allNull = true;
-            for (var i=3; i > auswahlSeg; i--) { 
-                if( seg[i] != 0 )
-                {
-                    allNull = false;
-                }
-            }
-            if( allNull == true )
-            {
-                // Valid network
-                return true;
-            }
-            else
-            {
-                // No valid network
-                return false;
-            }
-        }
-        else
-        {
-            // No valid network
-            return false;
-        }
     };
 });

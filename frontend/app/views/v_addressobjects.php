@@ -21,7 +21,7 @@
         <tbody id="addobjectstbody">
             <!-- Hidden table row for cloning and adding content -->
             <tr hidden id="addaddressobject">
-                <td hidden class="id"><input class="addressobjectid" type="text" name="value"></td>
+                <td hidden class="id"></td>
                 <td class="col-md-2"><input class="addressobjectname" type="text" name="value" placeholder="Name"></td>
                 <td class="col-md-2"><input class="addressobjectipv4address" type="text" name="value" placeholder="IPv4 address"></td>
                 <!-- <td class="col-md-2 type"></td>-->
@@ -30,8 +30,8 @@
                 <td class="col-md-1">
                     <select class="typeselection">
                         <option class="default">Select type...</option>
-                        <option value="hostv4">IPv4 Host</option>
-                        <option value="networkv4">IPv4 Network</option>
+                        <option value="host">IPv4 Host</option>
+                        <option value="network">IPv4 Network</option>
                     </select>
                 </td>
                 <td class="col-md-1"><a href="#" class="deleteobjectrow"><span class="glyphicon glyphicon-trash glyphicon-20" aria-hidden="true"></span></a></td>

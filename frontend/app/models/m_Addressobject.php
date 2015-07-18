@@ -28,7 +28,7 @@ class m_Addressobject
     public function __construct($m_database, $id = NULL)
     {
         $this->m_database = $m_database;
-        if( $id != NULL ) {
+        if( $id != NULL || $id != "NULL" ) {
             $this->id = intval($id);
             // Query the id and get other stuff
             $query = $this->m_database->prepare('SELECT name, ipv4address, ipv6address, dnsname, type, description FROM address_objects WHERE id=:id');
@@ -45,14 +45,24 @@ class m_Addressobject
         }
     }
 
+    /* Update or insert a new object */
     public function updateObject()
     {
         if( $this->id != NULL ) {
             $this->m_database->querySingle('UPDATE address_objects SET name = "'.$this->name.'", ipv4address = "'.$this->ipv4address.'", ipv6address = "'.$this->ipv6address.'", dnsname = "'.$this->dnsname.'", type = "'.$this->type.'", description = "'.$this->description.'" WHERE id = '.$this->id);
         } else {
-            $this->m_database->querySingle('INSERT INTO address_objects (name, ipv4address, ipv6address, dnsname, type, description) VALUES
-            	("'.$this->name.'", "'.$this->ipv4address.'", "'.$this->ipv6address.'", "'.$this->dnsname.'", "'.$this->type.'", "'.$this->description.'")');
+            $this->m_database->querySingle('INSERT INTO address_objects (name, ipv4address, ipv6address, dnsname, type, description) VALUES ("'.$this->name.'", "'.$this->ipv4address.'", "'.$this->ipv6address.'", "'.$this->dnsname.'", "'.$this->type.'", "'.$this->description.'")');
         }
+        $this->id = $this->m_database->querySingle('SELECT last_insert_rowid()');
+        return $this->getId();
+    }
+
+    /* Delete an object */
+    public function delete()
+    {
+        $query = $this->m_database->prepare('DELETE FROM address_objects WHERE id=:id');
+        $query->bindValue('id', $this->getId(), SQLITE3_TEXT );
+        $query->execute();
     }
 
     /* ID getter */
