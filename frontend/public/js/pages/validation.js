@@ -1,12 +1,24 @@
+function ipvalid(type, ipv4address) {
+    var valid = false;
+    if ( type == "network" ) {
+        valid = ipnetworkvalid(ipv4address);
+    } else if ( type == "host" ) {
+        valid = iphostvalid(ipv4address);
+    } else {
+        valid = false;
+    }
+    return valid;
+}
+
 function ipnetworkvalid(ipv4network) {
     // Trennen von Netz-IP und Subnetmask
-    ipv4network = ipv4network.val().toString().split("/");
+    ipv4network = ipv4network.split("/");
     // Netzwerk-IP
     netip = ipv4network[0];
     // Subnetmask
     mask = ipv4network[1];
     // Segmente aufteilen
-    seg = netip.toString().split("\.");
+    seg = netip.split("\.");
     // Hostanteil
     hostanteil = 32-mask;
     // Hostanteil im letzten Segment
@@ -42,4 +54,8 @@ function ipnetworkvalid(ipv4network) {
         // No valid network
         return false;
     }
+};
+
+function iphostvalid(ipv4address) {
+    return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipv4address))
 };

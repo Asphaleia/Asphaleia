@@ -62,6 +62,7 @@
             methods.addaddressobject();
             methods.saveaddressobject();
             methods.deleteaddressobject();
+            methods.typechange();
         });
     });
 </script>

@@ -29,7 +29,7 @@ define(['jquery', 'mylibs', 'pages/validation'], function($, mylibs) {
                 var bname = false;
                 var bdnsname = false;
                 var bipv4address = false;
-                // Watch out, are all arguments right?
+                // type selected
                 if ( type.select('option:selected').val() == "Select type..." ) {
                     // Error type
                     errorfeedback(type);
@@ -37,6 +37,7 @@ define(['jquery', 'mylibs', 'pages/validation'], function($, mylibs) {
                     okfeedback(type);
                     btype = true;
                 }
+                // name given
                 if ( (name.val() == "") || (name.val() == "Name") ) {
                     // Error name
                     errorfeedback(name);
@@ -44,14 +45,21 @@ define(['jquery', 'mylibs', 'pages/validation'], function($, mylibs) {
                     okfeedback(name);
                     bname = true;
                 }
-                if ( (dnsname.val() == "") || (dnsname.val() == "DNS Name") ) {
-                    // Error dnsname
-                    errorfeedback(dnsname);
+                // dnsname needed
+                if ( type.select('option:selected').val() != "network" ) {
+                    // dnsname given
+                    if ( (dnsname.val() == "") || (dnsname.val() == "DNS Name") ) {
+                        // Error dnsname
+                        errorfeedback(dnsname);   
+                    } else {
+                        okfeedback(dnsname);
+                        bdnsname = true;
+                    }
                 } else {
-                    okfeedback(dnsname);
                     bdnsname = true;
                 }
-                if ( !ipnetworkvalid(ipv4address) ) {
+                // check ipv4 address
+                if ( !ipvalid(type.select('option:selected').val(), ipv4address.val()) ) {
                     // Error ip
                     errorfeedback(ipv4address);
                 } else {
@@ -82,12 +90,16 @@ define(['jquery', 'mylibs', 'pages/validation'], function($, mylibs) {
                             dnsname.replaceWith(data['dnsname']);
                             description.replaceWith(data['description']);
                             type.replaceWith(data['type']);
+                            // Hide the save button
+                            thisrow.find('.saveobjectrow').hide();
+                            // show the new line button
                             $('#addressobjectstable #addobjectrowbutton').show();
                         }
                     });
                 }
             });
         },
+        // Delete the object
         deleteaddressobject: function() {
             $(document).once('click', '.deleteobjectrow', function() {
                 var row = $(this).closest('tr');
@@ -110,6 +122,29 @@ define(['jquery', 'mylibs', 'pages/validation'], function($, mylibs) {
                     });
                 }
             });
+        },
+        // Update on type change
+        typechange: function() {
+            $(document).once('change', '.typeselection', function() {
+                var thisrow = $(this).closest('tr');
+                var type = thisrow.find(".typeselection");
+                // If type is network
+                if ( type.select('option:selected').val() == "network" ) {
+                    // set dnsname val to ""
+                    thisrow.find('.addressobjectdnsname').val("");
+                    // disable dns input field
+                    thisrow.find('.addressobjectdnsname').prop( "disabled", true );
+                    // clear dns color
+                    neutralfeedback(thisrow.find('.addressobjectdnsname'));
+                    // clear ipv4 address color
+                    neutralfeedback(thisrow.find('.addressobjectipv4address'));
+                } else {
+                    // give errorfeedback for dnsname
+                    errorfeedback(thisrow.find('.addressobjectdnsname'));
+                    // enable dns input field
+                    thisrow.find('.addressobjectdnsname').prop( "disabled", false );
+                }
+            })
         }
     };
     function errorfeedback(objectclass) {
@@ -118,4 +153,7 @@ define(['jquery', 'mylibs', 'pages/validation'], function($, mylibs) {
     function okfeedback(objectclass) {
         objectclass.css({'background-color': '#449D44'});
     };
+    function neutralfeedback(objectclass) {
+        objectclass.css({'background-color': ''});
+    }
 });
