@@ -43,11 +43,16 @@
             }
         }
 
-        public function model($model) {
+        public function model($model, $id = Null) {
             $file = '../app/models/' . $model . '.php';
             if (file_exists($file)) {
                 require_once $file;
-                return new $model();
+                // If is given, create a model with data
+                if ($id != Null) {
+                    return new $model($this->m_database, $id);
+                } else {
+                    return new $model();
+                }
             } else {
                 return false;
             }
