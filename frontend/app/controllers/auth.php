@@ -27,11 +27,11 @@ class Auth extends Controller {
                     $this->m_database->add_session(session_id(), $_POST['username'], $login_time, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT']);
                 } else {
                     // todo: add override option
-                    $this->view('message', 'User ' . $_POST['username'] . ' is already logged in from ' . $data['source_ip']);
+                    $this->view('v_message', 'User ' . $_POST['username'] . ' is already logged in from ' . $data['source_ip']);
                 }
                 die();
             } else {
-                $this->view('message', 'Wrong username or password!');
+                $this->view('v_message', 'Wrong username or password!');
                 header( "refresh:2;url=/asphaleia/auth/login" );
                 die();
             }
